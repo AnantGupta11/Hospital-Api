@@ -1,8 +1,12 @@
 const express =require('express');
 const app=express();
-
+// port on which server is running
 const port= 8000;
 
+//importing db
+const db=require('./config/mongoose');
+
+app.use(express.urlencoded({extended: true}));
 
 
 
@@ -10,6 +14,8 @@ const port= 8000;
 
 
 
+//using express router
+app.use('/',require('./routes'));
 
 
 //firing up server 
