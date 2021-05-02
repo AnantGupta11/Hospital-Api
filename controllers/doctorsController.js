@@ -3,12 +3,14 @@ const Doctor=require('../models/doctor');
 //importing json web tokens
 const jwt= require('jsonwebtoken');
 
+//register the doctor 
 module.exports.register= async function(req,res){
     
     try{
-    
+        //first find if the doctor is already present in database
         let doctor= await Doctor.findOne({email: req.body.email});
         
+        //if doctor is not present then create 
         if(!doctor){
            await Doctor.create(req.body);
            return res.status(200).json({
@@ -17,6 +19,7 @@ module.exports.register= async function(req,res){
 
             })
         }else{
+            //if already present
             return res.status(409).json({
                 message: "You are already registered ! please login using Your email/phone"
             })
@@ -32,15 +35,18 @@ module.exports.register= async function(req,res){
 //login the doctor
 module.exports.login= async function(req,res){
     try{
-    
+        
+        //find the doctor
         let doctor= await Doctor.findOne({email:req.body.email});
         
+        //if doctor is not present or doctor's password is wrong
         if(!doctor || doctor.password != req.body.password){
             return res.json(422,{
                 message: 'Invalid Username or Password'
             });
         }
 
+        //if all the info right
         return res.json(200,{
             message:'Sign in SuccessFully !',
             data:{
