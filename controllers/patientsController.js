@@ -86,3 +86,34 @@ module.exports.createReport= async function(req,res){
         })
     }
 }
+// showing all the reports of specific patient
+
+module.exports.allReports= async function(req,res){
+    try{
+        let patient =await Patient.findById(req.params.id);
+        if(!patient){
+            res.status(404).json({
+                message: "Patient is not registered. please register !"
+            })
+        }else{
+            let allreport=await Report
+            .find({patient:patient})
+            .sort('-createdAt')
+            .populate('doctor')
+            
+
+            return res.status(200).json({
+                message: 'Here is your all reports',
+                data:{
+                    allreport:allreport
+                }
+            })
+        }
+
+    }catch(error){
+        console.log('Error------->',error);
+        return res.status(500).json({
+            message: 'Internal server Error'
+        })
+    }
+}

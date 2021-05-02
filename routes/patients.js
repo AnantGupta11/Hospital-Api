@@ -7,9 +7,10 @@ const passport = require('passport');
 
 const patientsController=require('../controllers/patientsController');
 
-router.post('/register', patientsController.register);
+router.post('/register', passport.authenticate('jwt', {session:false}),patientsController.register);
 
 router.post('/:id/create_report', passport.authenticate('jwt', {session:false}) , patientsController.createReport);
+router.get('/:id/all_reports',passport.authenticate('jwt', {session:false}),patientsController.allReports);
 
 
 
