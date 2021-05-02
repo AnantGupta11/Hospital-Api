@@ -9,7 +9,7 @@ const passport =require('passport');
 const passpotJWT= require('./config/passport-jwt-strategy');
 
 app.use(express.urlencoded({extended: true}));
-
+app.use(express.json());
 
 
 

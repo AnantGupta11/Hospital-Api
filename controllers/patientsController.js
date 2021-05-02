@@ -37,7 +37,7 @@ module.exports.register= async function(req,res){
     }
 }
 
-//Patient can create report
+//Doctor can create report of patient
 
 module.exports.createReport= async function(req,res){
     try{
@@ -49,13 +49,20 @@ module.exports.createReport= async function(req,res){
             //check if the patient is in our database
             if(patient){
                 //generate report
+                let status=req.body.status;
+                // Array.isArray(req.body.status) ? req.body.status : [req.body.status];
                 let report = await Report.create({
-                    status: req.body.status,
+                    status: status,
                     doctor:doctor,
                     patient:patient,
                     Date: new Date().toDateString()
                 })
-                return res.json(200,report);
+                
+                report= await Report
+                .findById(report._id)
+                .populate('doctor')
+                .populate('patient')
+                return res.status(200).json(report);
 
             }else{
                 //if patient is not found then tell to register

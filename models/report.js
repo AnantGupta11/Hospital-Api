@@ -5,11 +5,15 @@ const reportSchema= new mongoose.Schema({
         type: String,
         enum: ['Negative', 'Travelled-Quarantine', 'Symptoms-Quarantine','Positive-Admit'],
         default: 'Negative',
-        required: true
+        // required: true
     },
     doctor:{
         type : mongoose.Schema.Types.ObjectId,
         ref: 'Doctor'
+    },
+    patient:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Patient'
     },
     date:{
         type:String,
