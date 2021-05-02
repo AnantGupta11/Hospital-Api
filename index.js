@@ -5,6 +5,8 @@ const port= 8000;
 
 //importing db
 const db=require('./config/mongoose');
+const passport =require('passport');
+const passpotJWT= require('./config/passport-jwt-strategy');
 
 app.use(express.urlencoded({extended: true}));
 

@@ -1,5 +1,8 @@
 const Doctor=require('../models/doctor');
 
+//importing json web tokens
+const jwt= require('jsonwebtoken');
+
 module.exports.register= async function(req,res){
     
     try{
@@ -39,7 +42,10 @@ module.exports.login= async function(req,res){
         }
 
         return res.json(200,{
-            message:'Sign in SuccessFully'
+            message:'Sign in SuccessFully !',
+            data:{
+                token: jwt.sign(doctor.toJSON(),'hospital_api', {expiresIn: '1000000'})
+            }
         })
 
     }catch(err){
