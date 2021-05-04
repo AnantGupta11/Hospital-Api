@@ -12,7 +12,13 @@ module.exports.register= async function(req,res){
         
         //if doctor is not present then create 
         if(!doctor){
-           await Doctor.create(req.body);
+        //    await Doctor.create(req.body
+            let newDoctor= new Doctor();
+            newDoctor.name=req.body.name;
+            newDoctor.email= req.body.email;
+            newDoctor.mobile_no=req.body.mobile_no;
+            newDoctor.password= newDoctor.setPassword(req.body.password);
+            newDoctor.save();
            return res.status(200).json({
 
                 message: 'Doctor registered successfully'
@@ -40,7 +46,7 @@ module.exports.login= async function(req,res){
         let doctor= await Doctor.findOne({email:req.body.email});
         
         //if doctor is not present or doctor's password is wrong
-        if(!doctor || doctor.password != req.body.password){
+        if(!doctor || (!doctor.validPassword(req.body.password))){
             return res.json(422,{
                 message: 'Invalid Username or Password'
             });
